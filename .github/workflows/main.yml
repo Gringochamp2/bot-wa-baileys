@@ -16,5 +16,5 @@ jobs:
         run: npm install --omit=optional --ignore-scripts
       - name: Instalar FFmpeg
         run: sudo apt-get update && sudo apt-get install -y ffmpeg
-      - name: Start
+      - name: Começar
         run: NODE_SKIP_PLATFORM_CHECK=1 npx ts-node --transpile-only examples/bot.ts
