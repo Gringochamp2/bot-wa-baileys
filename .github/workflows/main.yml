@@ -8,18 +8,19 @@ jobs:
   run-bot:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
-          
-      - name: Install Dependencies
-        run: npm install --omit=optional --ignore-scripts
-        
+
       - name: Install FFmpeg
         run: sudo apt-get update && sudo apt-get install -y ffmpeg
-        
+
+      - name: Install Dependencies
+        run: npm install --omit=optional --ignore-scripts
+
       - name: Start Bot
         run: NODE_SKIP_PLATFORM_CHECK=1 npx ts-node --transpile-only examples/bot.ts
