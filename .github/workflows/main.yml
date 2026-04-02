@@ -16,11 +16,25 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install Dependencies
+      # PASSO NOVO: Recupera o login anterior
+      - name: Restore Session Cache
+        uses: actions/cache@v3
+        with:
+          path: ./auth
+          key: ${{ runner.os }}-baileys-session-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-baileys-session-
+
+      - name: Install FFmpeg
         run: |
-          npm install --omit=optional --ignore-scripts
-          # Reinstala especificamente o instalador para garantir o binário do Linux
-          npm install @ffmpeg-installer/ffmpeg
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      - name: Install Dependencies
+        run: npm install --omit=optional --ignore-scripts
 
       - name: Start Bot
-        run: NODE_SKIP_PLATFORM_CHECK=1 npx ts-node --transpile-only examples/bot.ts
+        run: |
+          rm -rf node_modules/@ffmpeg-installer
+          export FFMPEG_PATH=$(which ffmpeg)
+          NODE_SKIP_PLATFORM_CHECK=1 npx ts-node --transpile-only examples/bot.ts
