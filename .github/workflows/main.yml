@@ -16,16 +16,11 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install FFmpeg
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y ffmpeg
-
       - name: Install Dependencies
-        run: npm install --omit=optional --ignore-scripts
+        run: |
+          npm install --omit=optional --ignore-scripts
+          # Reinstala especificamente o instalador para garantir o binário do Linux
+          npm install @ffmpeg-installer/ffmpeg
 
       - name: Start Bot
-        run: |
-          rm -rf node_modules/@ffmpeg-installer
-          export FFMPEG_PATH=$(which ffmpeg)
-          NODE_SKIP_PLATFORM_CHECK=1 npx ts-node --transpile-only examples/bot.ts
+        run: NODE_SKIP_PLATFORM_CHECK=1 npx ts-node --transpile-only examples/bot.ts
