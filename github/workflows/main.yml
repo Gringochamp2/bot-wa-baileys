@@ -1,0 +1,15 @@
+name: Bot Jipa Speed
+on: [push, workflow_dispatch]
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - name: Install
+        run: npm install --omit=optional --ignore-scripts
+      - name: Start
+        run: NODE_SKIP_PLATFORM_CHECK=1 npx ts-node --transpile-only examples/bot.ts
