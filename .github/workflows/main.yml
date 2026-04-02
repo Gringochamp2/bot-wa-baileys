@@ -23,4 +23,6 @@ jobs:
         run: npm install --omit=optional --ignore-scripts
 
       - name: Start Bot
-        run: NODE_SKIP_PLATFORM_CHECK=1 npx ts-node --transpile-only examples/bot.ts
+        run: |
+          export FFMPEG_PATH=/usr/bin/ffmpeg
+          NODE_SKIP_PLATFORM_CHECK=1 npx ts-node --transpile-only examples/bot.ts
