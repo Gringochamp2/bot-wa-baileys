@@ -16,25 +16,18 @@ jobs:
         with:
           node-version: 20
 
-      # PASSO NOVO: Recupera o login anterior
       - name: Restore Session Cache
         uses: actions/cache@v3
         with:
-          path: ./auth
-          key: ${{ runner.os }}-baileys-session-${{ github.run_id }}
+          path: ./auth_info_baileys
+          key: ${{ runner.os }}-session-${{ github.run_id }}
           restore-keys: |
-            ${{ runner.os }}-baileys-session-
-
-      - name: Install FFmpeg
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y ffmpeg
+            ${{ runner.os }}-session-
 
       - name: Install Dependencies
-        run: npm install --omit=optional --ignore-scripts
+        run: |
+          npm install --omit=optional --ignore-scripts
+          npm install @ffmpeg-installer/ffmpeg
 
       - name: Start Bot
-        run: |
-          rm -rf node_modules/@ffmpeg-installer
-          export FFMPEG_PATH=$(which ffmpeg)
-          NODE_SKIP_PLATFORM_CHECK=1 npx ts-node --transpile-only examples/bot.ts
+        run: NODE_SKIP_PLATFORM_CHECK=1 npx ts-node --transpile-only examples/bot.ts
